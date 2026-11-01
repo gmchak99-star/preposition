@@ -19,6 +19,22 @@
   var MODE_NAME = { ko: '한국어+영어', en: '영어만' };
   var REPEATS = [1, 2, 3, 5, 10, 20, 30, 50, 100, 200, 300, 500];
   var SLEEPS = [0, 15, 30, 60, 90];
+  function trainPanel(key) {
+    var T = window.TRAIN && window.TRAIN[key]; if (!T) return '';
+    var h = '<div class="corebox"><h3>🧠 1단계 · 원형(Core) — 이 그림만 머리에 남겨요</h3><ul class="tcore">';
+    T.core.forEach(function (c) { h += '<li>' + esc(c) + '</li>'; });
+    h += '</ul><p class="tg">한국어 뜻은 외우지 않아요. 이 이미지는 이해를 돕는 비유예요.</p></div>';
+    h += '<details class="train"><summary>2·3단계 훈련 펼치기</summary><div class="tbody">';
+    h += '<h3>2단계 · 한국어 해석 대신 장면을 떠올리기</h3>';
+    T.drill.forEach(function (d) {
+      h += '<div class="drill"><p class="den">' + esc(d.en) + '</p><p class="dno">❌ 한국어: “' + esc(d.no) + '” (X)</p><p class="dyes">⭕ 뇌 훈련: ' + esc(d.yes) + '</p></div>';
+    });
+    h += '<h3>3단계 · 반대말(대조군)로 감각 튕겨 보기</h3>';
+    T.contrast.forEach(function (c) {
+      h += '<div class="contrast"><p><span>' + esc(c.a) + '</span> <b>↔</b> <span>' + esc(c.b) + '</span></p><p class="cn">' + esc(c.note) + '</p></div>';
+    });
+    return h + '</div></details>';
+  }
   function iconRow(word) {
     var ws = word.split(' · '), o = '';
     ws.forEach(function (w) { var s = window.ICONS && window.ICONS[w.trim()]; if (s) o += '<figure class="ico">' + s + '<figcaption>' + esc(w.trim()) + '</figcaption></figure>'; });
@@ -85,8 +101,10 @@
     h += '<p class="disc">💡 “왜 이런 뜻?”은 이해를 돕기 위한 이미지 해석이에요. 단어의 뜻은 영영사전과 대조했지만, 그림 설명은 외우기 쉽게 만든 비유예요.</p>';
     h += '<div class="audiobar">' +
       '<button class="abtn" data-mode="ko" aria-label="한국어와 영어 음성 재생">▶ 한국어+영어 <small>한국어 → 영어</small></button>' +
-      '<button class="abtn alt" data-mode="en" aria-label="영어만 음성 재생">▶ 영어만</button></div>';
+      '<button class="abtn alt" data-mode="en" aria-label="영어만 음성 재생">▶ 영어만</button>' +
+      '<button class="kotgl" id="koTgl" aria-pressed="false">한국번역</button></div>';
     h += iconRow(p.word);
+    h += trainPanel(p.key);
     h += '<p class="core"><span class="tag">핵심 그림</span>' + em(p.core) + '</p>';
     p.groups.forEach(function (g, gi) {
       h += '<article class="grp"><h3><span class="gn">' + (gi + 1) + '</span>' + esc(g.title) + '</h3>';
@@ -106,6 +124,7 @@
     markToc();
     setToc(false);
     LS.set('ep_view', p.key);
+    setTimeout(applyKo, 0);
     highlight();
   }
 
@@ -414,7 +433,15 @@
     if (resumed) toast('멈춘 곳(' + (u + 1) + '번째 문장)부터 이어서 재생해요.', '처음부터', function () { goUnit(0); });
   }
 
+  function applyKo() {
+    var show = LS.get('ep_showko', '0') === '1';
+    document.documentElement.classList.toggle('hideko', !show);
+    var t = document.getElementById('koTgl');
+    if (t) { t.setAttribute('aria-pressed', show ? 'true' : 'false'); t.textContent = show ? '한국번역 숨기기' : '한국번역'; t.classList.toggle('on', show); }
+  }
+  applyKo();
   $('content').addEventListener('click', function (e) {
+    if (e.target.id === 'koTgl') { LS.set('ep_showko', LS.get('ep_showko', '0') === '1' ? '0' : '1'); applyKo(); return; }
     var b = e.target.closest('.abtn');
     if (b && st.viewKey) {
       var mode = b.getAttribute('data-mode');
