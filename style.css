@@ -114,3 +114,7 @@ em { font-style: normal; font-weight: 700; background: linear-gradient(transpare
 
 .offline { margin-top: 14px; padding: 10px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
 .offline button { margin-top: 6px; }
+
+.disc { font-size: 13px; opacity: .7; margin: 0 0 14px; }
+.ver { font-size: 13px; opacity: .75; margin: -4px 0 10px; padding-left: 10px; border-left: 3px solid var(--accent, #4a8); }
+.icons{display:flex;gap:10px;justify-content:center;margin:4px 0 12px}.ico{margin:0;text-align:center;width:112px;color:var(--text,#222)}.ico svg{width:100%;height:auto;background:var(--card,rgba(127,127,127,.08));border-radius:10px}.ico figcaption{font-size:12px;opacity:.7;margin-top:2px}

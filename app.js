@@ -19,6 +19,11 @@
   var MODE_NAME = { ko: '한국어+영어', en: '영어만' };
   var REPEATS = [1, 2, 3, 5, 10, 20, 30, 50, 100, 200, 300, 500];
   var SLEEPS = [0, 15, 30, 60, 90];
+  function iconRow(word) {
+    var ws = word.split(' · '), o = '';
+    ws.forEach(function (w) { var s = window.ICONS && window.ICONS[w.trim()]; if (s) o += '<figure class="ico">' + s + '<figcaption>' + esc(w.trim()) + '</figcaption></figure>'; });
+    return o ? '<div class="icons">' + o + '</div>' : '';
+  }
   function pageTitle(p) { return p.label + ' ' + p.num + ' ' + p.word; }
 
   /* ---------- state ---------- */
@@ -77,13 +82,15 @@
     h += '<p class="partname">' + esc(part.title) + '</p>';
     h += '<header class="ph"><span class="no">' + esc(p.label) + ' ' + p.num + '</span><h1>' + esc(p.word) + '</h1></header>';
     if (p.sub) h += '<p class="subtitle">' + esc(p.sub) + '</p>';
+    h += '<p class="disc">💡 “왜 이런 뜻?”은 이해를 돕기 위한 이미지 해석이에요. 단어의 뜻은 영영사전과 대조했지만, 그림 설명은 외우기 쉽게 만든 비유예요.</p>';
     h += '<div class="audiobar">' +
       '<button class="abtn" data-mode="ko" aria-label="한국어와 영어 음성 재생">▶ 한국어+영어 <small>한국어 → 영어</small></button>' +
       '<button class="abtn alt" data-mode="en" aria-label="영어만 음성 재생">▶ 영어만</button></div>';
+    h += iconRow(p.word);
     h += '<p class="core"><span class="tag">핵심 그림</span>' + em(p.core) + '</p>';
     p.groups.forEach(function (g, gi) {
       h += '<article class="grp"><h3><span class="gn">' + (gi + 1) + '</span>' + esc(g.title) + '</h3>';
-      h += '<p class="why"><span class="tag">왜 이런 뜻?</span>' + em(g.why) + '</p><ul class="ex">';
+      h += '<p class="why"><span class="tag">왜 이런 뜻?</span>' + em(g.why) + '</p>' + (g.ver ? '<p class="ver">✔ 검증 · ' + em(g.ver) + '</p>' : '') + '<ul class="ex">';
       g.rows.forEach(function (r) {
         h += '<li data-i="' + r.i + '"><span class="en">' + esc(r.en) + '</span><span class="ko">' + esc(r.ko) + '</span></li>';
       });
