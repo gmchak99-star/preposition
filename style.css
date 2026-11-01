@@ -118,3 +118,4 @@ em { font-style: normal; font-weight: 700; background: linear-gradient(transpare
 .disc { font-size: 13px; opacity: .7; margin: 0 0 14px; }
 .ver { font-size: 13px; opacity: .75; margin: -4px 0 10px; padding-left: 10px; border-left: 3px solid var(--accent, #4a8); }
 .icons{display:flex;gap:10px;justify-content:center;margin:4px 0 12px}.ico{margin:0;text-align:center;width:112px;color:var(--text,#222)}.ico svg{width:100%;height:auto;background:var(--card,rgba(127,127,127,.08));border-radius:10px}.ico figcaption{font-size:12px;opacity:.7;margin-top:2px}
+.star{color:#d93025;font-weight:800}.flag,.gflag{display:block;color:#d93025;font-size:13px;margin-top:4px;line-height:1.45}.gflag{margin:6px 0 8px}li.flagged{border-left:3px solid #d93025}

@@ -1,5 +1,5 @@
 /* 오프라인 재생용 서비스 워커: 화면 파일은 최신 우선, 음성은 저장해 둔 것을 우선 사용 */
-var SHELL = 'ep-shell-v2';
+var SHELL = 'ep-shell-v3';
 var AUDIO = 'ep-audio-v1';
 var SHELL_FILES = ['./', 'index.html', 'style.css', 'app.js', 'data.js', 'icons.js', 'manifest.json', 'icon-192.png', 'icon-512.png'];
 
